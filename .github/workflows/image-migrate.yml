@@ -18,6 +18,7 @@ on:
       target_registry:
         description: 'target registry'
         required: true
+        default: 'lostar01'
 
 jobs:
   migration:
