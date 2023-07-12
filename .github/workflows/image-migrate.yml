@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Pull Source Image
-      run |
+      run: |
         docker pull ${{github.event.inputs.source_image}}
       
     - name: Push Docker Hub
