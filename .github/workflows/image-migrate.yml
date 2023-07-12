@@ -4,25 +4,34 @@
 name: Image Migration
 on:
   workflow_dispath:
-    sourceimage:
-      description: 'source image which from global'
-      required: true
-    targetimage:
-      description: 'target image which will be push target registry'
+    inputs:
+      source_registry:
+        description: 'source image registry'
+        required: true
+        default: 'registry.k8s.io'
+      source_app:
+        description: 'source app image name'
+        required: true
+      source_app_tag:
+        description: 'source app image tag'
+        required: true
+      target_registry:
+        description: 'target registry'
+        required: true
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
     - name: Pull Source Image
       run: |
-        docker pull ${{github.event.inputs.sourceimage}}
+        docker pull ${{ inputs.source_registry }}/${{ inputs.source_app }}/${{ inputs.source_app_tag }}
       
     - name: Push Docker Hub
       run: |
         docker login -u ${{ secrets.HUBDOCKER_USER}} -p ${{ secrets.HUBDOCKER_PASSWD}} docker.io
         echo 'push image to target registry'
-        docker tag ${{github.event.inputs.sourceimage}} ${{github.event.inputs.targetimage}}
-        docker push ${{github.event.inputs.targetimage}}
+        docker tag ${{ inputs.source_registry }}/${{ inputs.source_app }}/${{ inputs.source_app_tag }} ${{ inputs.target_registry }}/${{ inputs.source_app }}/${{ inputs.source_app_tag }}
+        docker push ${{ inputs.target_registry }}/${{ inputs.source_app }}/${{ inputs.source_app_tag }}
