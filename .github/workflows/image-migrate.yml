@@ -3,7 +3,7 @@
 
 name: Image Migration
 on:
-  workflow_dispath:
+  workflow_dispatch:
     inputs:
       source_registry:
         description: 'source image registry'
