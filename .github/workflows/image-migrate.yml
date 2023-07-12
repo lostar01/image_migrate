@@ -4,10 +4,10 @@
 name: Image Migration
 on:
   workflow_dispath:
-    source_image:
+    sourceimage:
       description: 'source image which from global'
       required: true
-    target_image:
+    targetimage:
       description: 'target image which will be push target registry'
 
 jobs:
@@ -18,11 +18,11 @@ jobs:
 
     - name: Pull Source Image
       run: |
-        docker pull ${{github.event.inputs.source_image}}
+        docker pull ${{github.event.inputs.sourceimage}}
       
     - name: Push Docker Hub
       run: |
         docker login -u ${{ secrets.HUBDOCKER_USER}} -p ${{ secrets.HUBDOCKER_PASSWD}} docker.io
         echo 'push image to target registry'
-        docker tag ${{github.event.inputs.source_image}} ${{github.event.inputs.target_image}}
-        docker push ${{github.event.inputs.target_image}}
+        docker tag ${{github.event.inputs.sourceimage}} ${{github.event.inputs.targetimage}}
+        docker push ${{github.event.inputs.targetimage}}
